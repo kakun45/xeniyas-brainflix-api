@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const videosData = require("../data/video-details.json"); // data is not a part of a code. in Real life don't store it in Git
+const videosData = require("../data/video-details.json");
 const crypto = require("crypto");
 const {
   readData,
@@ -8,8 +8,8 @@ const {
   writeDataOnPost,
 } = require("../controllers/controllers");
 
-// get a whole videoList
-// works with http://localhost:8080/videos/?api_key=lskjk
+// GET /videos that responds with an array of videos for videoList
+// to use: http://localhost:8080/videos/?api_key=lskjk
 router.get("/", (_req, res) => {
   const arrObj = videosData.map((video) => ({
     id: video.id,
@@ -20,18 +20,21 @@ router.get("/", (_req, res) => {
   res.status(200).json(arrObj);
 });
 
-// tested: http://localhost:8080/videos/25ce5d91-a262-4dcf-bb87-42b87546bcfa/?api_key=Kkdfjd
+// GET /videos/:id that responds with an object containing the details of the video with an id of :id.
+// to use: http://localhost:8080/videos/25ce5d91-a262-4dcf-bb87-42b87546bcfa/?api_key=Kkdfjd
 router.get("/:videoId", (req, res) => {
   const { videoId } = req.params;
   let data = videosData.find((video) => video.id === videoId);
   if (data) {
     return res.status(200).json(data);
   }
-  return res.status(404).send("Here is no data for " + videoId);
+  return res.status(404).json({
+    message: `No video with that id ${videoId} exists`,
+  });
 });
 
 // only returns Arr of comments that belongs to a path of a videoId
-// http://localhost:8080/videos/84e96018-4022-434e-80bf-000ce4cd12b8/comments/?api_key=lskjk
+// to use: http://localhost:8080/videos/84e96018-4022-434e-80bf-000ce4cd12b8/comments/?api_key=lskjk
 // body {
 // "comment": "test text from a form"
 // }
@@ -44,7 +47,9 @@ router.post("/:videoId/comments", (req, res) => {
     // define comments from parsedData
     const commentsArrOFvideoId = videoIdComments?.comments;
     if (commentsArrOFvideoId === undefined) {
-      return res.status(422).json("invalid ID");
+      return res.status(422).json({
+        message: "No video with that id exists",
+      });
     }
     const arrOfNames = readNickNames();
     const randomInd = Math.floor(Math.random() * arrOfNames.length);
@@ -56,8 +61,7 @@ router.post("/:videoId/comments", (req, res) => {
       likes: 0,
       timestamp: Date.now(),
     });
-    console.log(allData);
-    // write in a modified data
+    // write-in a modified data
     writeDataOnPost(allData);
     // 201 Created success status
     res.status(201).json(commentsArrOFvideoId); // returns an entire comments arr
@@ -65,7 +69,7 @@ router.post("/:videoId/comments", (req, res) => {
     console.log("Unprocessable Entity. Request is missing required parameters");
     res
       .status(422)
-      .json("Unprocessable Entity. Request is missing required parameters"); // tested
+      .json("Unprocessable Entity. Request is missing required parameters"); 
   }
 });
 

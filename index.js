@@ -1,11 +1,11 @@
-// BACKEND! NO local Storage
+// BACKEND! REST API, NO local Storage
 const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const { readDocs } = require("./controllers/controllers");
 const routeVideos = require("./routes/videos");
-// const routeComments = require("./routes/comments");
+const routeRegister = require("./routes/register");
 const routeUpload = require("./routes/upload");
 
 const { PORT } = process.env;
@@ -34,7 +34,7 @@ app.use("/images", express.static("./public/images"));
 // routs
 app.use("/videos", routeVideos);
 app.use("/upload", routeUpload);
-// app.use("/comments", routeComments); // moved to videos
+app.use("/register", routeRegister); 
 
 app.listen(PORT || 8000, () => {
   console.log("Server is up 👍 on " + PORT || 8000);

@@ -2,31 +2,34 @@ const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
 const {
+  readComments,
   readData,
-  writeDataOnPost,
   numberWithCommas,
+  writeDataOnPost,
 } = require("../controllers/controllers");
 
+// was "image": "http://localhost:8080/images/fantasy.jpeg"
+// POST /videos that will add a new video to the video list. A unique id must be generated for each video added.
 router.post("/", (req, res) => {
   const parsedData = readData();
-  const { title, description } = req.body;
+  const { title, description, image } = req.body;
   const id = crypto.randomUUID();
+  const baseComments = readComments();
   if (title && description) {
     parsedData.push({
       id,
       description,
       title,
       channel: "Xeniya Sun",
-      image: "http://localhost:8080/images/fantasy.jpeg",
+      image,
       views: numberWithCommas(Math.floor(Math.random() * 1000000 + 1)),
       likes: numberWithCommas(Math.floor(Math.random() * 1000000 + 1)),
       timestamp: Date.now(),
-      comments: [],
+      comments: baseComments,
     });
     // write data into .json
     writeDataOnPost(parsedData);
     // 201 Created success status
-    console.log(parsedData);
     console.log("Congrats! Your video is uploaded!");
     return res.status(201).json(parsedData);
   }
