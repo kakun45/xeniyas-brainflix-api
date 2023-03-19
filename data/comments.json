@@ -1,6 +1,20 @@
 [
   {
-    "name": "test name",
-    "text": "test text"
+    "name": "Will Smith",
+    "comment": "Hey Ya All! Whassup!",
+    "likes": 5,
+    "timestamp": 1632496261000
+  },
+  {
+    "name": "Sigourney Weaver",
+    "comment": "I only have One Job! \n(Galaxy Quest)",
+    "likes": 50,
+    "timestamp": 1628522461000
+  },
+  {
+    "name": "Angelina Jolie",
+    "comment": "You think, What if I make a mistake today, I'll regret it?",
+    "likes": 99,
+    "timestamp": 1632496262000
   }
 ]
