@@ -1,4 +1,4 @@
-// BACKEND! REST API, NO local Storage
+// BACKEND! REST API
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -21,7 +21,6 @@ app.use("/upload", (req, res, next) => {
 });
 
 // Home end-points with Docs in res
-// to call: http://localhost:8080/?api_key=lskjk
 app.route("/").get((req, res) => {
   docs = readDocs();
   // in a browser this downloads .md a file vs showing it into html page

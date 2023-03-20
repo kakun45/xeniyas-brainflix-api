@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const videosData = require("../data/video-details.json");
 const crypto = require("crypto");
 const {
   readData,
@@ -9,8 +8,8 @@ const {
 } = require("../controllers/controllers");
 
 // GET /videos that responds with an array of videos for videoList
-// to use: http://localhost:8080/videos/?api_key=lskjk
 router.get("/", (_req, res) => {
+  const videosData = readData();
   const arrObj = videosData.map((video) => ({
     id: video.id,
     title: video.title,
@@ -21,9 +20,9 @@ router.get("/", (_req, res) => {
 });
 
 // GET /videos/:id that responds with an object containing the details of the video with an id of :id.
-// to use: http://localhost:8080/videos/25ce5d91-a262-4dcf-bb87-42b87546bcfa/?api_key=Kkdfjd
 router.get("/:videoId", (req, res) => {
   const { videoId } = req.params;
+  const videosData = readData();
   let data = videosData.find((video) => video.id === videoId);
   if (data) {
     return res.status(200).json(data);
@@ -34,10 +33,6 @@ router.get("/:videoId", (req, res) => {
 });
 
 // only returns Arr of comments that belongs to a path of a videoId
-// to use: http://localhost:8080/videos/84e96018-4022-434e-80bf-000ce4cd12b8/comments/?api_key=lskjk
-// body {
-// "comment": "test text from a form"
-// }
 router.post("/:videoId/comments", (req, res) => {
   const videoId = req.params.videoId;
   const allData = readData();
@@ -69,7 +64,7 @@ router.post("/:videoId/comments", (req, res) => {
     console.log("Unprocessable Entity. Request is missing required parameters");
     res
       .status(422)
-      .json("Unprocessable Entity. Request is missing required parameters"); 
+      .json("Unprocessable Entity. Request is missing required parameters");
   }
 });
 

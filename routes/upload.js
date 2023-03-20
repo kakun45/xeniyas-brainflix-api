@@ -8,7 +8,6 @@ const {
   writeDataOnPost,
 } = require("../controllers/controllers");
 
-// was "image": "http://localhost:8080/images/fantasy.jpeg"
 // POST /videos that will add a new video to the video list. A unique id must be generated for each video added.
 router.post("/", (req, res) => {
   const parsedData = readData();
