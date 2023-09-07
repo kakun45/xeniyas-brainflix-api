@@ -33,8 +33,8 @@ app.use("/images", express.static("./public/images"));
 // routs
 app.use("/videos", routeVideos);
 app.use("/upload", routeUpload);
-app.use("/register", routeRegister); 
+app.use("/register", routeRegister);
 
-app.listen(PORT || 8000, () => {
-  console.log("Server is up 👍 on " + PORT || 8000);
+app.listen(PORT || 8080, () => {
+  console.log("Server is up 👍 on " + PORT || 8080);
 });

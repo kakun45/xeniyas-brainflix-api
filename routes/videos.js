@@ -68,4 +68,21 @@ router.post("/:videoId/comments", (req, res) => {
   }
 });
 
+// Deletes the given comment and returns it in the response body
+// http://localhost:8080/:videoId/comments/657de346-b3c2-47b4-bf5b-6db90d1e3bdc/?api_key=lskjk
+router.delete("/:videoId/comments/:commentId", (req, res) => {
+  const videoId = req.params.videoId;
+  const commentId = req.params.commentId;
+  const allData = readData();
+  const videoIdComments = allData.find((video) => video.id === videoId);
+  const videoIdCommentId = videoIdComments.find((comment) => comment.id === commentId);
+  const index = videoIdComments.indexOf(videoIdCommentId);
+  console.log(index);
+  if (index > -1) {
+    // only splice array when item is found
+    videoIdComments.splice(index, 1); 
+    // 2nd parameter means remove one item only
+  }
+  // write into json modified arr
+});
 module.exports = router;
